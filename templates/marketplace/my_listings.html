@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Listings | Waste2Wealth</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<section class="marketplace-section">
+    <div class="container">
+        <h2>My Listings 📦</h2>
+
+        {% if wastes %}
+        <div class="marketplace-grid">
+            {% for waste in wastes %}
+            <div class="marketplace-card">
+                {% if waste.image %}
+                    <img src="{{ waste.image.url }}" alt="Waste image">
+                {% endif %}
+
+                <h3>{{ waste.get_waste_type_display }}</h3>
+
+                <p class="waste-info">
+                    Weight: {{ waste.weight_kg }} kg
+                </p>
+
+                <p class="waste-price">
+                    Status: {{ waste.get_status_display }}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <p class="empty-text">
+                You haven’t uploaded any waste yet.
+            </p>
+        {% endif %}
+    </div>
+</section>
+
+</body>
+</html>

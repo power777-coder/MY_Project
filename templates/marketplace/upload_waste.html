@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Waste | Waste2Wealth</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="auth-body">
+
+<div class="upload-container">
+    <h2>Upload Waste ♻️</h2>
+    <p class="upload-subtext">
+        Add waste details to sell it on the marketplace
+    </p>
+
+    <form method="POST" enctype="multipart/form-data" class="upload-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Waste Type</label>
+            {{ form.waste_type }}
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            {{ form.description }}
+        </div>
+
+        <div class="form-group">
+            <label>Weight (kg)</label>
+            {{ form.weight_kg }}
+        </div>
+
+        <div class="form-group">
+            <label>Upload Image</label>
+            {{ form.image }}
+        </div>
+
+        <button type="submit" class="upload-btn">
+            Submit Waste
+        </button>
+    </form>
+</div>
+
+</body>
+</html>

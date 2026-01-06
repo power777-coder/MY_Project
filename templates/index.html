@@ -1,0 +1,211 @@
+
+{% load static %}
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste2Wealth Marketplace</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+    <div class="logo">Waste2Wealth</div>
+
+    <ul class="nav-links">
+        <li><a href="{% url 'home' %}">Home</a></li>
+
+        {% if not user.is_authenticated %}
+            <li><a href="#about">About</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how">How It Works</a></li>
+            <li><a href="#contact">Contact</a></li>
+        {% endif %}
+
+        <li><a href="{% url 'marketplace' %}">Marketplace</a></li>
+
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'my_listings' %}">My Listings</a></li>
+            <li><a href="{% url 'upload_waste' %}">Upload Waste</a></li>
+        {% endif %}
+    </ul>
+
+    <div class="auth-buttons">
+        {% if user.is_authenticated %}
+            <span class="welcome-text">Hi, {{ user.username }}</span>
+            <a href="{% url 'logout' %}" class="btn login-btn">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn login-btn">Login</a>
+            <a href="{% url 'signup' %}" class="btn signup-btn">Sign Up</a>
+        {% endif %}
+    </div>
+</nav>
+
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-text">
+            <h1>Turn Your Waste Into Money</h1>
+            <p>Sell your waste, earn rewards, and help the environment.</p>
+            <a href="#marketplace" class="btn primary-btn">Browse Marketplace</a>
+            <a href="#upload" class="btn outline-btn">Upload Waste</a>
+        </div>
+        <div class="hero-image">
+            <img src="{% static 'images/hero.jpg' %}" alt="Recycling">
+        </div>
+    </section>
+
+    <!-- About Section -->
+<section id="about" class="about-section">
+    <div class="about-container">
+        <div class="about-text">
+            <h2>About Waste2Wealth</h2>
+            <p>
+                Waste2Wealth is a smart online marketplace that helps individuals and businesses
+                convert waste into wealth. Sellers can list waste items, while recyclers and
+                processing units can purchase them efficiently.
+            </p>
+            <p>
+                Using AI & ML, the platform classifies waste, suggests fair prices, and recommends
+                the best buyers — making recycling smarter, faster, and more profitable.
+            </p>
+        </div>
+
+        <div class="about-highlight">
+            <div class="highlight-box">
+                <h3>♻️ Sustainable</h3>
+                <p>Promotes recycling and circular economy</p>
+            </div>
+            <div class="highlight-box">
+                <h3>🤖 AI Powered</h3>
+                <p>Smart pricing & buyer matching</p>
+            </div>
+            <div class="highlight-box">
+                <h3>💰 Profitable</h3>
+                <p>Turn waste into real earnings</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features-section">
+    <h2>Key Features</h2>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <img src="{% static 'images/upload.png' %}" alt="Upload Waste">
+            <h3>Upload Waste</h3>
+            <p>Easily upload waste with images, description, and weight.</p>
+        </div>
+
+        <div class="feature-card">
+            <img src="{% static 'images/ml.png' %}" alt="AI Pricing">
+            <h3>AI Price Suggestion</h3>
+            <p>Machine learning predicts the most accurate and fair price.</p>
+        </div>
+
+        <div class="feature-card">
+            <img src="{% static 'images/buyer.png' %}" alt="Buyer Matching">
+            <h3>Smart Buyer Matching</h3>
+            <p>Connects sellers with the most relevant nearby buyers.</p>
+        </div>
+
+        <div class="feature-card">
+            <img src="{% static 'images/analytics.png' %}" alt="Analytics">
+            <h3>Dashboard & Analytics</h3>
+            <p>Track listings, earnings, and transactions in real time.</p>
+        </div>
+    </div>
+</section>
+
+
+    <!-- Marketplace Section -->
+   <section class="marketplace-section">
+    <div class="container">
+        <h2>Latest Waste Listings ♻️</h2>
+
+        {% if latest_wastes %}
+        <div class="marketplace-grid">
+            {% for waste in latest_wastes %}
+            <div class="marketplace-card">
+                {% if waste.image %}
+                    <img src="{{ waste.image.url }}" alt="Waste image">
+                {% endif %}
+
+                <h3>{{ waste.get_waste_type_display }}</h3>
+
+                <p class="waste-info">
+                    Weight: {{ waste.weight_kg }} kg
+                </p>
+
+                <p class="waste-price">
+                    {% if waste.final_price %}
+                        ₹ {{ waste.final_price }}
+                    {% else %}
+                        Price on request
+                    {% endif %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="view-all-btn">
+            <a href="{% url 'marketplace' %}" class="btn">
+                View All Marketplace
+            </a>
+        </div>
+
+        {% else %}
+            <p class="empty-text">No listings yet. Be the first to upload!</p>
+        {% endif %}
+    </div>
+</section>
+
+
+    <!-- How it Works Section -->
+    <section id="how" class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps-container">
+            <div class="step">
+                <img src="{% static 'images/step1.png' %}" alt="Step 1">
+                <h3>Upload</h3>
+                <p>Add your waste items with photo and description.</p>
+            </div>
+            <div class="step">
+                <img src="{% static 'images/step2.png' %}"alt="Step 2">
+                <h3>Price Suggestion</h3>
+                <p>Get fair price using our ML system.</p>
+            </div>
+            <div class="step">
+                <img src="{% static 'images/step3.png' %}" alt="Step 3">
+                <h3>Sell & Earn</h3>
+                <p>Buyers are recommended, transact securely, and get paid.</p>
+            </div>
+            <div class="step">
+                <img src="{% static 'images/step4.png' %}" alt="Step 4">
+                <h3>Track</h3>
+                <p>Monitor listings and earnings from your dashboard.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <p>Email: support@waste2wealth.com</p>
+        <p>Phone: +91 12345 67890</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Waste2Wealth. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
