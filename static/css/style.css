@@ -6,6 +6,12 @@
     font-family: 'Roboto', sans-serif;
 }
 
+/* Hide mobile menu on desktop */
+.mobile-menu {
+    display: none;
+}
+
+
 /* Navbar */
 
 .navbar {
