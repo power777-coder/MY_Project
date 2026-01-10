@@ -30,6 +30,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['my-project-dm79.onrender.com']
 
+# ALLOWED_HOSTS = ['*']
+
 
 # Application definition
 

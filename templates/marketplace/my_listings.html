@@ -25,9 +25,10 @@
                     Weight: {{ waste.weight_kg }} kg
                 </p>
 
-                <p class="waste-price">
-                    Status: {{ waste.get_status_display }}
-                </p>
+                <p class="status-badge status-{{ waste.status }}">
+    {{ waste.get_status_display }}
+</p>
+
             </div>
             {% endfor %}
         </div>

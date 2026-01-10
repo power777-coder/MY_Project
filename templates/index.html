@@ -81,13 +81,48 @@
         <div class="hero-text">
             <h1>Turn Your Waste Into Money</h1>
             <p>Sell your waste, earn rewards, and help the environment.</p>
-            <a href="#marketplace" class="btn primary-btn">Browse Marketplace</a>
-            <a href="#upload" class="btn outline-btn">Upload Waste</a>
+            <a href="{% url 'marketplace' %}" class="btn primary-btn">Browse Marketplace</a>
+
+{% if user.is_authenticated %}
+    <a href="{% url 'upload_waste' %}" class="btn outline-btn">Upload Waste</a>
+{% else %}
+    <a href="{% url 'login' %}" class="btn outline-btn">Start Selling</a>
+{% endif %}
+
         </div>
-        <div class="hero-image">
+
+    
+    {% comment %} <div class="hero-divider"></div>
+
+       <div class="hero-stats-clean">
+    <div class="stat">
+        <span class="stat-number">120+</span>
+        <span class="stat-label">Listings</span>
+    </div>
+
+    <div class="stat-divider"></div>
+
+    <div class="stat">
+        <span class="stat-number">5+</span>
+        <span class="stat-label">Categories</span>
+    </div>
+
+    <div class="stat-divider"></div>
+
+    <div class="stat">
+        <span class="stat-number">AI</span>
+        <span class="stat-label">Smart Pricing</span>
+    </div>
+</div> {% endcomment %}
+
+
+ 
+        {% comment %} <div class="hero-image">
             <img src="{% static 'images/hero.jpg' %}" alt="Recycling">
-        </div>
+        </div> {% endcomment %}
     </section>
+
+
 
     <!-- About Section -->
 <section id="about" class="about-section">
@@ -163,24 +198,29 @@
         <div class="marketplace-grid">
             {% for waste in latest_wastes %}
             <div class="marketplace-card">
-                {% if waste.image %}
-                    <img src="{{ waste.image.url }}" alt="Waste image">
-                {% endif %}
+    {% if waste.image %}
+        <img src="{{ waste.image.url }}" alt="Waste image">
+    {% else %}
+        <img src="{% static 'images/placeholder.jpg' %}">
+    {% endif %}
 
-                <h3>{{ waste.get_waste_type_display }}</h3>
+    <h3>{{ waste.get_waste_type_display }}</h3>
 
-                <p class="waste-info">
-                    Weight: {{ waste.weight_kg }} kg
-                </p>
+    <p class="waste-info">
+        Weight: {{ waste.weight_kg }} kg
+    </p>
 
-                <p class="waste-price">
-                    {% if waste.final_price %}
-                        ₹ {{ waste.final_price }}
-                    {% else %}
-                        Price on request
-                    {% endif %}
-                </p>
-            </div>
+    <p class="waste-price">
+        {% if waste.final_price %}
+            ₹ {{ waste.final_price }}
+        {% else %}
+            Price on request
+        {% endif %}
+    </p>
+
+    <a href="#" class="btn marketplace-btn">View Details</a>
+</div>
+
             {% endfor %}
         </div>
 
