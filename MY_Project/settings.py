@@ -86,19 +86,19 @@ WSGI_APPLICATION = 'MY_Project.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': dj_database_url.parse(
-#         os.environ.get('DATABASE_URL')
-#     )
-# }
+#  https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+        default=os.environ.get('DATABASE_URL')
     )
-}
+ }
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+#     )
+# }
 
 
 # Password validation
