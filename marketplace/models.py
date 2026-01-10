@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
+
 
 class Waste(models.Model):
 
@@ -31,12 +33,13 @@ class Waste(models.Model):
     description = models.TextField()
 
     weight_kg = models.FloatField()
-
-    image = models.ImageField(
-        upload_to='waste_images/',
-        blank=True,
-        null=True
+    
+    image = CloudinaryField(
+    'image',
+    blank=True,
+    null=True
     )
+
 
     predicted_price = models.FloatField(
         blank=True,

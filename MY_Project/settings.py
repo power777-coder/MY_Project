@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import dj_database_url
 import os
 import cloudinary
+from dotenv import load_dotenv
+load_dotenv()
 
 from pathlib import Path
 
@@ -28,9 +30,9 @@ SECRET_KEY = 'django-insecure-mkw!!%oome^ox^p&ww-$as1l8qzl24sf2fzjd8y&jjv7)#kxxf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['my-project-dm79.onrender.com']
+ #ALLOWED_HOSTS = ['my-project-dm79.onrender.com']
 
-# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
