@@ -413,6 +413,12 @@ section {
     margin-bottom: 1rem;
 }
 
+.ml-price {
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    color: #2b7a0b;
+    font-weight: 600;
+}
 
 
 

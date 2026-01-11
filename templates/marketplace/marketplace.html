@@ -34,6 +34,11 @@
                         Price on request
                     {% endif %}
                 </p>
+                {% if waste.predicted_price %}
+                 <p class="ml-price">
+                    🤖 AI Suggested Price: ₹ {{ waste.predicted_price }}
+                 </p>
+              {% endif %}
             </div>
             {% endfor %}
         </div>
