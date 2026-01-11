@@ -28,17 +28,14 @@
                 </p>
 
                 <p class="waste-price">
-                    {% if waste.final_price %}
-                        ₹ {{ waste.final_price }}
-                    {% else %}
-                        Price on request
-                    {% endif %}
-                </p>
-                {% if waste.predicted_price %}
-                 <p class="ml-price">
-                    🤖 AI Suggested Price: ₹ {{ waste.predicted_price }}
-                 </p>
-              {% endif %}
+    {% if waste.final_price %}
+        ₹ {{ waste.final_price }}
+    {% elif waste.predicted_price %}
+        🤖 AI Suggested Price: ₹ {{ waste.predicted_price }}
+    {% else %}
+        Price on request
+    {% endif %}
+</p>
             </div>
             {% endfor %}
         </div>
