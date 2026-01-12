@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import dj_database_url
 import os
 import cloudinary
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 from pathlib import Path
 
@@ -170,9 +170,9 @@ if os.environ.get("CLOUDINARY_CLOUD_NAME"):
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
     CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-        'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+        'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+        'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+        'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
     }
 else:
     # Local fallback
