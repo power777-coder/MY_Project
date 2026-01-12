@@ -15,9 +15,13 @@
         <div class="marketplace-grid">
             {% for waste in wastes %}
             <div class="marketplace-card">
-                {% if waste.image %}
-                    <img src="{{ waste.image.url }}" alt="Waste image">
-                {% endif %}
+              {% if waste.image and waste.image.name and waste.image.url %}
+    <img src="{{ waste.image.url }}" alt="Waste image">
+{% else %}
+    <img src="{% static 'images/placeholder.jpg' %}">
+{% endif %}
+
+
 
                 <h3>{{ waste.get_waste_type_display }}</h3>
 
