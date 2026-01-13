@@ -1,0 +1,17 @@
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.env/
+
+# Media (optional – since Cloudinary)
+media/
+
+# OS files
+.DS_Store
+Thumbs.db
