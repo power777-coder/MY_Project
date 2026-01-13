@@ -1,6 +1,6 @@
 
 {% load static %}
-
+{% load cloudinary %}
 
 <html lang="en">
 <head>
@@ -91,35 +91,6 @@
 
         </div>
 
-    
-    {% comment %} <div class="hero-divider"></div>
-
-       <div class="hero-stats-clean">
-    <div class="stat">
-        <span class="stat-number">120+</span>
-        <span class="stat-label">Listings</span>
-    </div>
-
-    <div class="stat-divider"></div>
-
-    <div class="stat">
-        <span class="stat-number">5+</span>
-        <span class="stat-label">Categories</span>
-    </div>
-
-    <div class="stat-divider"></div>
-
-    <div class="stat">
-        <span class="stat-number">AI</span>
-        <span class="stat-label">Smart Pricing</span>
-    </div>
-</div> {% endcomment %}
-
-
- 
-        {% comment %} <div class="hero-image">
-            <img src="{% static 'images/hero.jpg' %}" alt="Recycling">
-        </div> {% endcomment %}
     </section>
 
 
@@ -198,8 +169,8 @@
         <div class="marketplace-grid">
             {% for waste in latest_wastes %}
             <div class="marketplace-card">
-    {% if waste.image and waste.image.name and waste.image.url %}
-    <img src="{{ waste.image.url }}" alt="Waste image">
+    {% if waste.image %}
+    {% cloudinary waste.image width=400 height=250 crop="fill" %}
 {% else %}
     <img src="{% static 'images/placeholder.jpg' %}">
 {% endif %}

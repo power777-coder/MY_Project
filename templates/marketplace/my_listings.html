@@ -1,4 +1,5 @@
 {% load static %}
+{% load cloudinary %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,8 +16,8 @@
         <div class="marketplace-grid">
             {% for waste in wastes %}
             <div class="marketplace-card">
-              {% if waste.image and waste.image.name and waste.image.url %}
-    <img src="{{ waste.image.url }}" alt="Waste image">
+              {% if waste.image %}
+    {% cloudinary waste.image width=400 height=250 crop="fill" %}
 {% else %}
     <img src="{% static 'images/placeholder.jpg' %}">
 {% endif %}
