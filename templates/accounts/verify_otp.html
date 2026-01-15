@@ -1,12 +1,24 @@
-<div class="auth-container">
-    <h2>Verify OTP 🔐</h2>
-    <p class="otp-info">
-        We’ve sent a 6-digit OTP to your email.
-    </p>
+<div class="auth-container otp-container">
+    <div class="otp-card">
+        <h2>Verify OTP 🔐</h2>
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="otp" placeholder="Enter OTP" required>
-        <button type="submit">Verify OTP</button>
-    </form>
+        <p class="otp-info">
+            We’ve sent a <strong>6-digit OTP</strong> to your email.<br>
+            Please enter it below to continue.
+        </p>
+
+        <form method="POST" class="otp-form">
+            {% csrf_token %}
+
+            <input 
+                type="text" 
+                name="otp" 
+                placeholder="Enter 6-digit OTP" 
+                maxlength="6"
+                required
+            >
+
+            <button type="submit">Verify OTP</button>
+        </form>
+    </div>
 </div>
