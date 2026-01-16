@@ -56,10 +56,6 @@ def signup(request):
             messages.error(request, "Username already exists.")
             return redirect('signup')
 
-        # if User.objects.filter(email=email).exists():
-        #     messages.error(request, "Email already registered.")
-        #     return redirect('signup')
-
         otp = str(random.randint(100000, 999999))
 
         EmailOTP.objects.update_or_create(
@@ -67,37 +63,29 @@ def signup(request):
             defaults={'otp': otp}
         )
 
-        subject = "Your Waste2Wealth OTP Verification Code"
-        message = f"""
-Hello {username},
-
-Your OTP for Waste2Wealth signup is: {otp}
-
-This OTP is valid for 10 minutes.
-If you did not request this, please ignore this email.
-
-Regards,
-Waste2Wealth Team
-"""
-
-        if EMAIL_ENABLED:
-           status = send_otp_email_brevo(email, username, otp)
-           if status != 201:
-               messages.error(
-               request,
-               "Unable to send OTP email right now. Please try again later."
-                )
-           return redirect("signup")
-        else:
-           print("OTP for", email, "is:", otp)
-
+        # ✅ STORE SESSION FIRST
         request.session['signup_username'] = username
         request.session['signup_email'] = email
         request.session['signup_password'] = password
 
+        # ✅ SEND EMAIL
+        if EMAIL_ENABLED:
+            status = send_otp_email_brevo(email, username, otp)
+            if status != 201:
+                messages.error(
+                    request,
+                    "Unable to send OTP email. Try again later."
+                )
+                return redirect('signup')
+        else:
+            print("OTP for", email, "is:", otp)
+
+        # ✅ NOW redirect to OTP page
         return redirect('verify_otp')
 
     return render(request, "accounts/signup.html")
+
+
 
 
 def login_view(request):
@@ -122,38 +110,51 @@ def logout_view(request):
     return redirect('home')
 
 def verify_otp(request):
+    email = request.session.get('signup_email')
+
+    # ✅ Session safety
+    if not email:
+        messages.error(request, "Session expired. Please sign up again.")
+        return redirect('signup')
+
     if request.method == "POST":
         entered_otp = request.POST.get("otp")
 
-        username = request.session.get('signup_username')
-        email = request.session.get('signup_email')
-        password = request.session.get('signup_password')
-
         try:
             record = EmailOTP.objects.get(email=email)
+
+            # 🔎 DEBUG (temporary – VERY IMPORTANT)
+            print("ENTERED OTP:", entered_otp)
+            print("DB OTP:", record.otp)
 
             if record.is_expired():
                 messages.error(request, "OTP expired. Please sign up again.")
                 return redirect('signup')
 
-            if record.otp == entered_otp:
-                User.objects.create_user(
-                    username=username,
-                    email=email,
-                    password=password
-                )
+            if record.otp != entered_otp:
+                messages.error(request, "Invalid OTP. Please try again.")
+                return render(request, "accounts/verify_otp.html")
 
-                # Cleanup
-                record.delete()
-                request.session.flush()
+            # ✅ OTP MATCHED — CREATE USER
+            username = request.session['signup_username']
+            password = request.session['signup_password']
 
-                messages.success(request, "Account created successfully!")
-                return redirect('login')
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
 
-            else:
-                messages.error(request, "Invalid OTP")
+            # Cleanup
+            record.delete()
+            request.session.flush()
+
+            messages.success(request, "Account created successfully! Please log in.")
+            return redirect('login')
 
         except EmailOTP.DoesNotExist:
-            messages.error(request, "OTP not found")
+            messages.error(request, "OTP record not found. Please sign up again.")
+            return redirect('signup')
 
     return render(request, "accounts/verify_otp.html")
+
