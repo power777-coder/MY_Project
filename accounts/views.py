@@ -2,12 +2,47 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Profile
-from django.core.mail import send_mail
 from .models import EmailOTP
 import random
 import os
-from django.conf import settings
+import requests
+
+def send_otp_email_brevo(to_email, username, otp):
+    url = "https://api.brevo.com/v3/smtp/email"
+
+    headers = {
+        "accept": "application/json",
+        "api-key": os.getenv("BREVO_API_KEY"),
+        "content-type": "application/json"
+    }
+
+    payload = {
+        "sender": {
+            "name": "Waste2Wealth",
+            "email": os.getenv("EMAIL_FROM")
+        },
+        "to": [
+            {
+                "email": to_email,
+                "name": username
+            }
+        ],
+        "subject": "Your Waste2Wealth OTP Verification Code",
+        "htmlContent": f"""
+            <h2>Waste2Wealth OTP Verification</h2>
+            <p>Hello <b>{username}</b>,</p>
+            <p>Your OTP is:</p>
+            <h1>{otp}</h1>
+            <p>This OTP is valid for 10 minutes.</p>
+            <p>If you didn’t request this, ignore the email.</p>
+            <br>
+            <p>♻️ Waste2Wealth Team</p>
+        """
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+    return response.status_code
+
 
 EMAIL_ENABLED = os.getenv("EMAIL_ENABLED") == "True"
 
@@ -46,15 +81,15 @@ Waste2Wealth Team
 """
 
         if EMAIL_ENABLED:
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [email],
-                fail_silently=False,
-            )
+           status = send_otp_email_brevo(email, username, otp)
+           if status != 201:
+               messages.error(
+               request,
+               "Unable to send OTP email right now. Please try again later."
+                )
+           return redirect("signup")
         else:
-            print("OTP for", email, "is:", otp)
+           print("OTP for", email, "is:", otp)
 
         request.session['signup_username'] = username
         request.session['signup_email'] = email
