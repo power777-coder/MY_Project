@@ -18,15 +18,12 @@ class Profile(models.Model):
         return self.user.username
     
 class EmailOTP(models.Model):
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     otp = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def is_expired(self):
-      if self.created_at is None:
-        return True
-      return timezone.now() > timezone.localtime(self.created_at) + timedelta(minutes=10)
-
+        return timezone.now() > self.created_at + timedelta(minutes=10)
 
     def __str__(self):
-        return f"{self.email} - {self.otp}"
+        return self.email
