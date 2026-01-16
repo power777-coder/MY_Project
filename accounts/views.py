@@ -83,11 +83,6 @@ def signup(request):
     return render(request, "accounts/signup.html")
 
 
-
-
-
-
-
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -110,51 +105,53 @@ def logout_view(request):
     return redirect('home')
 
 def verify_otp(request):
-    email = request.session.get('signup_email')
-
-    # ✅ Session safety
-    if not email:
-        messages.error(request, "Session expired. Please sign up again.")
-        return redirect('signup')
-
     if request.method == "POST":
         entered_otp = request.POST.get("otp")
+        print("ENTERED OTP:", entered_otp)
+
+        username = request.session.get('signup_username')
+        email = request.session.get('signup_email')
+        password = request.session.get('signup_password')
+
+        print("SESSION DATA:", username, email, password)
+
+        if not all([username, email, password]):
+            print("❌ SESSION LOST")
+            messages.error(request, "Session expired. Please sign up again.")
+            return redirect('signup')
 
         try:
             record = EmailOTP.objects.get(email=email)
-
-            # 🔎 DEBUG (temporary – VERY IMPORTANT)
-            print("ENTERED OTP:", entered_otp)
             print("DB OTP:", record.otp)
 
             if record.is_expired():
-                messages.error(request, "OTP expired. Please sign up again.")
+                print("❌ OTP EXPIRED")
                 return redirect('signup')
 
-            if record.otp != entered_otp:
-                messages.error(request, "Invalid OTP. Please try again.")
-                return render(request, "accounts/verify_otp.html")
+            if record.otp == entered_otp:
+                print("✅ OTP MATCHED")
 
-            # ✅ OTP MATCHED — CREATE USER
-            username = request.session['signup_username']
-            password = request.session['signup_password']
+                try:
+                    user = User.objects.create_user(
+                        username=username,
+                        email=email,
+                        password=password
+                    )
+                    print("✅ USER CREATED:", user.username)
 
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password
-            )
+                except Exception as e:
+                    print("❌ USER CREATION FAILED:", e)
+                    messages.error(request, "User creation failed.")
+                    return redirect('signup')
 
-            # Cleanup
-            record.delete()
-            request.session.flush()
+                record.delete()
+                request.session.flush()
 
-            messages.success(request, "Account created successfully! Please log in.")
-            return redirect('login')
+                return redirect('login')
 
-        except EmailOTP.DoesNotExist:
-            messages.error(request, "OTP record not found. Please sign up again.")
-            return redirect('signup')
+        except Exception as e:
+            print("❌ VERIFY OTP ERROR:", e)
 
     return render(request, "accounts/verify_otp.html")
+
 
