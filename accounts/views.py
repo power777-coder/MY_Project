@@ -63,27 +63,27 @@ def signup(request):
             defaults={'otp': otp}
         )
 
-        # ✅ STORE SESSION FIRST
-        request.session['signup_username'] = username
-        request.session['signup_email'] = email
-        request.session['signup_password'] = password
-
-        # ✅ SEND EMAIL
+        # SEND EMAIL
         if EMAIL_ENABLED:
             status = send_otp_email_brevo(email, username, otp)
             if status != 201:
                 messages.error(
                     request,
-                    "Unable to send OTP email. Try again later."
+                    "Unable to send OTP email right now. Please try again later."
                 )
-                return redirect('signup')
+                return redirect("signup")
         else:
             print("OTP for", email, "is:", otp)
 
-        # ✅ NOW redirect to OTP page
+        # SAVE SESSION ONLY ON SUCCESS
+        request.session['signup_username'] = username
+        request.session['signup_email'] = email
+        request.session['signup_password'] = password
+
         return redirect('verify_otp')
 
     return render(request, "accounts/signup.html")
+
 
 
 
