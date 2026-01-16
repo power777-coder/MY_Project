@@ -45,7 +45,6 @@ def send_otp_email_brevo(to_email, username, otp):
 
 
 EMAIL_ENABLED = os.getenv("EMAIL_ENABLED") == "True"
-
 def signup(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -63,7 +62,6 @@ def signup(request):
             defaults={'otp': otp}
         )
 
-        # SEND EMAIL
         if EMAIL_ENABLED:
             status = send_otp_email_brevo(email, username, otp)
             if status != 201:
@@ -75,7 +73,7 @@ def signup(request):
         else:
             print("OTP for", email, "is:", otp)
 
-        # SAVE SESSION ONLY ON SUCCESS
+        # ✅ SESSION MUST BE SAVED BEFORE REDIRECT
         request.session['signup_username'] = username
         request.session['signup_email'] = email
         request.session['signup_password'] = password
@@ -83,6 +81,7 @@ def signup(request):
         return redirect('verify_otp')
 
     return render(request, "accounts/signup.html")
+
 
 
 
