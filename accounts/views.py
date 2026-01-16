@@ -6,6 +6,8 @@ from .models import EmailOTP
 import random
 import os
 import requests
+from django.utils import timezone
+from datetime import timedelta
 
 def send_otp_email_brevo(to_email, username, otp):
     url = "https://api.brevo.com/v3/smtp/email"
@@ -58,9 +60,14 @@ def signup(request):
 
         otp = str(random.randint(100000, 999999))
 
+        expires_at = timezone.now() + timedelta(minutes=10)
+
         EmailOTP.objects.update_or_create(
-            email=email,
-            defaults={'otp': otp}
+             email=email,
+             defaults={
+                'otp': otp,
+                'expires_at': expires_at
+             }
         )
 
         if EMAIL_ENABLED:
