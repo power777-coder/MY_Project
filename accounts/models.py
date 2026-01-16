@@ -23,8 +23,10 @@ class EmailOTP(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def is_expired(self):
-        expiry_time = self.created_at + timedelta(minutes=10)
-        return timezone.now() > expiry_time
+      if self.created_at is None:
+        return True
+      return timezone.now() > timezone.localtime(self.created_at) + timedelta(minutes=10)
+
 
     def __str__(self):
         return f"{self.email} - {self.otp}"
