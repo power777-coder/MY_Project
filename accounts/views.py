@@ -45,6 +45,7 @@ def send_otp_email_brevo(to_email, username, otp):
 
 
 EMAIL_ENABLED = os.getenv("EMAIL_ENABLED") == "True"
+
 def signup(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -64,7 +65,7 @@ def signup(request):
 
         if EMAIL_ENABLED:
             status = send_otp_email_brevo(email, username, otp)
-            if status != 201:
+            if status not in [200, 201, 202]:
                 messages.error(
                     request,
                     "Unable to send OTP email right now. Please try again later."
@@ -73,7 +74,6 @@ def signup(request):
         else:
             print("OTP for", email, "is:", otp)
 
-        # ✅ SESSION MUST BE SAVED BEFORE REDIRECT
         request.session['signup_username'] = username
         request.session['signup_email'] = email
         request.session['signup_password'] = password
@@ -81,6 +81,7 @@ def signup(request):
         return redirect('verify_otp')
 
     return render(request, "accounts/signup.html")
+
 
 
 
