@@ -6,13 +6,24 @@ from .models import Profile
 from django.core.mail import send_mail
 from .models import EmailOTP
 import random
+import os
+from django.conf import settings
 
+EMAIL_ENABLED = os.getenv("EMAIL_ENABLED") == "True"
 
 def signup(request):
     if request.method == "POST":
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists.")
+            return redirect('signup')
+
+        # if User.objects.filter(email=email).exists():
+        #     messages.error(request, "Email already registered.")
+        #     return redirect('signup')
 
         otp = str(random.randint(100000, 999999))
 
@@ -21,14 +32,30 @@ def signup(request):
             defaults={'otp': otp}
         )
 
-        send_mail(
-            subject="Your Waste2Wealth OTP",
-            message=f"Your OTP is {otp}. It is valid for 5 minutes.",
-            from_email=None,
-            recipient_list=[email],
-        )
+        subject = "Your Waste2Wealth OTP Verification Code"
+        message = f"""
+Hello {username},
 
-        # Store temporarily
+Your OTP for Waste2Wealth signup is: {otp}
+
+This OTP is valid for 10 minutes.
+If you did not request this, please ignore this email.
+
+Regards,
+Waste2Wealth Team
+"""
+
+        if EMAIL_ENABLED:
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+        else:
+            print("OTP for", email, "is:", otp)
+
         request.session['signup_username'] = username
         request.session['signup_email'] = email
         request.session['signup_password'] = password
