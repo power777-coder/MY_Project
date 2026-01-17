@@ -413,6 +413,99 @@ section {
     margin-bottom: 1rem;
 }
 
+/* ---------- OTP SPECIFIC ---------- */
+/* OTP Page Container */
+.otp-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f1f8f4, #ffffff);
+    padding: 20px;
+}
+
+/* OTP Card */
+.otp-card {
+    background: #ffffff;
+    padding: 2.5rem 2.2rem;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 16px;
+    box-shadow:
+        0 15px 40px rgba(43, 122, 11, 0.15),
+        0 0 0 2px rgba(43, 122, 11, 0.05);
+    text-align: center;
+    animation: fadeUp 0.5s ease;
+}
+
+/* Heading */
+.otp-card h2 {
+    margin-bottom: 0.6rem;
+    font-size: 1.6rem;
+    color: #1f5f0f;
+}
+
+/* Info text */
+.otp-info {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 1.6rem;
+    line-height: 1.5;
+}
+
+/* OTP Form */
+.otp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+/* OTP Input */
+.otp-form input {
+    padding: 0.9rem 1rem;
+    font-size: 1.05rem;
+    text-align: center;
+    letter-spacing: 0.3em;
+    border-radius: 10px;
+    border: 1.5px solid #cfe6cf;
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+.otp-form input:focus {
+    border-color: #2b7a0b;
+    box-shadow: 0 0 0 3px rgba(43, 122, 11, 0.15);
+}
+
+/* Verify Button */
+.otp-form button {
+    background: linear-gradient(135deg, #2b7a0b, #3fa61a);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 0.85rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.otp-form button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 25px rgba(43, 122, 11, 0.25);
+}
+
+/* Small animation */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 
 
@@ -573,99 +666,7 @@ footer {
     text-decoration: underline;
 }
 
-/* ---------- OTP SPECIFIC ---------- */
-/* OTP Page Container */
-.otp-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #f1f8f4, #ffffff);
-    padding: 20px;
-}
 
-/* OTP Card */
-.otp-card {
-    background: #ffffff;
-    padding: 2.5rem 2.2rem;
-    width: 100%;
-    max-width: 420px;
-    border-radius: 16px;
-    box-shadow:
-        0 15px 40px rgba(43, 122, 11, 0.15),
-        0 0 0 2px rgba(43, 122, 11, 0.05);
-    text-align: center;
-    animation: fadeUp 0.5s ease;
-}
-
-/* Heading */
-.otp-card h2 {
-    margin-bottom: 0.6rem;
-    font-size: 1.6rem;
-    color: #1f5f0f;
-}
-
-/* Info text */
-.otp-info {
-    font-size: 0.95rem;
-    color: #555;
-    margin-bottom: 1.6rem;
-    line-height: 1.5;
-}
-
-/* OTP Form */
-.otp-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-}
-
-/* OTP Input */
-.otp-form input {
-    padding: 0.9rem 1rem;
-    font-size: 1.05rem;
-    text-align: center;
-    letter-spacing: 0.3em;
-    border-radius: 10px;
-    border: 1.5px solid #cfe6cf;
-    outline: none;
-    transition: all 0.25s ease;
-}
-
-.otp-form input:focus {
-    border-color: #2b7a0b;
-    box-shadow: 0 0 0 3px rgba(43, 122, 11, 0.15);
-}
-
-/* Verify Button */
-.otp-form button {
-    background: linear-gradient(135deg, #2b7a0b, #3fa61a);
-    color: #ffffff;
-    border: none;
-    border-radius: 12px;
-    padding: 0.85rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.otp-form button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 25px rgba(43, 122, 11, 0.25);
-}
-
-/* Small animation */
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 
 /* =========================
