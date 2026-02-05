@@ -95,15 +95,11 @@ WSGI_APPLICATION = 'MY_Project.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'waste2wealth_local',
-        'USER': 'postgres',
-        'PASSWORD': 'Kre@sha07',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.parse(
+        os.environ.get("DATABASE_URL")
+    )
 }
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
