@@ -39,9 +39,9 @@ SECRET_KEY = 'django-insecure-mkw!!%oome^ox^p&ww-$as1l8qzl24sf2fzjd8y&jjv7)#kxxf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['my-project-dm79.onrender.com']
+#ALLOWED_HOSTS = ['my-project-dm79.onrender.com']
 
-#ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -94,25 +94,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'MY_Project.wsgi.application'
 
 
-# Database
-#  https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'waste2wealth_local',
+        'USER': 'postgres',
+        'PASSWORD': 'Kre@sha07',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
-
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
-#     )
-# }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -150,8 +142,8 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'

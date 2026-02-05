@@ -1,10 +1,9 @@
 {% load static %}
-{% load cloudinary %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Marketplace | Waste2Wealth</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'marketplace/css/style.css' %}">
 </head>
 <body>
 
@@ -16,13 +15,12 @@
         <div class="marketplace-grid">
             {% for waste in wastes %}
             <div class="marketplace-card">
+
                 {% if waste.image %}
-    {% cloudinary waste.image width=400 height=250 crop="fill" %}
-{% else %}
-    <img src="{% static 'images/placeholder.jpg' %}">
-{% endif %}
-
-
+                    <img src="{{ waste.image.url }}" alt="Waste Image">
+                {% else %}
+                    <img src="{% static 'images/placeholder.jpg' %}" alt="No Image">
+                {% endif %}
 
                 <h3>{{ waste.get_waste_type_display }}</h3>
 
@@ -31,14 +29,15 @@
                 </p>
 
                 <p class="waste-price">
-    {% if waste.final_price %}
-        ₹ {{ waste.final_price }}
-    {% elif waste.predicted_price %}
-        🤖 AI Suggested Price: ₹ {{ waste.predicted_price }}
-    {% else %}
-        Price on request
-    {% endif %}
-</p>
+                    {% if waste.final_price %}
+                        ₹ {{ waste.final_price }}
+                    {% elif waste.predicted_price %}
+                        🤖 AI Suggested Price: ₹ {{ waste.predicted_price }}
+                    {% else %}
+                        Price on request
+                    {% endif %}
+                </p>
+
             </div>
             {% endfor %}
         </div>
